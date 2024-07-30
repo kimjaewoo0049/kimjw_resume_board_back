@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.kimjw_board.mappers.UserMapper">
+    <select id="userList" resultType="com.example.kimjw_board.dtos.UserDto">
+        SELECT uid, user_id AS userId, user_pw AS userPw, user_rating AS userRating, nickname, address, phone, email, current_at AS currentAt
+        FROM user_tb where uid=#{uid};
+    </select>
+    <select id="userCheck" resultType="com.example.kimjw_board.dtos.UserCheckDto">
+        SELECT ct.uid, user_pw AS userPw FROM content_tb as ct INNER JOIN user_tb as ut ON ct.user_id = ut.uid
+        WHERE ct.uid=#{uid} AND user_pw=#{userPw};
+    </select>
+    <insert id="join"> <!--스프링 시큐리티 회원가입 기능 완료-->
+        INSERT INTO user_tb (user_id, user_pw, user_name, nickname, address, phone, email)
+        VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{address}, #{phone}, #{email});
+    </insert>
+    <select id="login" resultType="com.example.kimjw_board.models.User"> <!--스프링 시큐리티 로그인 기능 완료-->
+        SELECT uid, user_id AS userId, user_pw AS userPw, user_rating AS userRating, nickname AS nickName, user_name AS userName, address, phone, email, current_at AS currentAt
+        FROM user_tb
+        WHERE user_id=#{userId};
+    </select>
+</mapper>

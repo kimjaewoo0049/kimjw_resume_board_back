@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.kimjw_board.mappers.ContentMapper">
+    <!-- board에 전체 게시글수 출력   -->
+    <select id="postCount">
+        SELECT COUNT(*) FROM content_tb WHERE deleteyn = "n";
+    </select>
+    <!-- board에 전체 게시글 리스트 출력   -->
+    <select id="boardList" resultType="com.example.kimjw_board.dtos.ContentDto">
+        SELECT ct.uid, user_name as userName, title, content, create_at AS createAt, deleteyn
+        FROM content_tb AS ct INNER JOIN user_tb as ut ON ut.uid = ct.user_id WHERE deleteyn="n" ORDER BY ct.uid DESC LIMIT #{postNum} OFFSET #{currentPage};
+    </select>
+    <select id="contentView" resultType="com.example.kimjw_board.dtos.ContentDto">
+        SELECT ct.uid as uid, title, content, user_name AS userName, create_at AS createAt
+        FROM content_tb as ct INNER JOIN user_tb as ut ON ct.user_id = ut.uid WHERE ct.uid = #{uid};
+    </select>
+    <update id="contentDelete">
+        UPDATE content_tb SET deleteyn = "Y" WHERE uid=#{uid} AND user_id=#{userUid};
+    </update>
+    <select id="contentFind" resultType="com.example.kimjw_board.dtos.ContentDto">
+        SELECT * FROM content_tb where uid = #{uid};
+    </select>
+    <select id="userContentFind" resultType="com.example.kimjw_board.dtos.ContentDto">   <!-- contentDelete와 contentUpdate에서 기능실행전 작성자인지 확인하기 위한 기능 -->
+        SELECT * FROM content_tb where user_id = #{userUid} and uid = #{uid};
+    </select>
+    <update id="contentUpdate">
+        UPDATE content_tb SET title = #{title}, content = #{content}  WHERE uid=#{uid};
+    </update>
+    <insert id="contentCreate">
+        INSERT INTO content_tb (user_id, title, content) VALUES (#{userUid},#{title},#{content});
+    </insert>
+</mapper>
