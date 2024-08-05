@@ -23,10 +23,12 @@ public class ContentService {
         contentDto.setCurrentPage(contentDto.getCurrentPage()*contentDto.getPostNum()); // 화면에서 보내주는 현재페이지와 한페이지에 출력할 값을 곱해서 setCurrentPage 해준다.
         return contentMapper.boardList(contentDto);
     }
-    public ContentDto contentView (ContentDto contentDto){
-        return contentMapper.contentView(contentDto);
+    public ContentDto contentView (int uid){
+        return contentMapper.contentView(uid);
     }
-    public String contentDelete(ContentDto contentDto){
+    public String contentDelete(int uid){
+        ContentDto contentDto = new ContentDto();
+        contentDto.setUid(uid);
         contentDto.setUserUid(clientMemberLoader.userInfo());
         ContentDto searchContent = contentMapper.userContentFind(contentDto);
 

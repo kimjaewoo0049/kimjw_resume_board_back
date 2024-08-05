@@ -11,6 +11,31 @@
         SELECT ct.uid, user_pw AS userPw FROM content_tb as ct INNER JOIN user_tb as ut ON ct.user_id = ut.uid
         WHERE ct.uid=#{uid} AND user_pw=#{userPw};
     </select>
+    <select id="pwCheck" resultType="int">
+        SELECT IF(EXISTS(
+            SELECT 1 FROM user_tb WHERE user_id = #{userId} AND email = #{email}
+        ), 1, 0) AS recordExists;
+    </select>
+    <select id="findId" resultType="com.example.kimjw_board.dtos.UserDto">
+        SELECT uid, user_id AS userId, user_pw AS userPw, user_rating AS userRating, nickname AS nickName, user_name AS userName, address, phone, email, current_at AS currentAt
+        FROM user_tb
+        WHERE user_name=#{userName} AND email=#{email};
+    </select>
+    <select id="idRegex" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1 FROM user_tb WHERE user_id = #{userId}
+        )
+    </select>
+    <select id="nickNameRegex" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1 FROM user_tb WHERE nickName=#{nickName}
+        )
+    </select>
+    <select id="emailRegex" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1 FROM user_tb WHERE email=#{email}
+        )
+    </select>
     <insert id="join"> <!--스프링 시큐리티 회원가입 기능 완료-->
         INSERT INTO user_tb (user_id, user_pw, user_name, nickname, address, phone, email)
         VALUES (#{userId}, #{userPw}, #{userName}, #{nickName}, #{address}, #{phone}, #{email});

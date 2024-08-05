@@ -14,7 +14,9 @@
     </select>
     <select id="contentView" resultType="com.example.kimjw_board.dtos.ContentDto">
         SELECT ct.uid as uid, title, content, user_name AS userName, create_at AS createAt
-        FROM content_tb as ct INNER JOIN user_tb as ut ON ct.user_id = ut.uid WHERE ct.uid = #{uid};
+        FROM content_tb as ct
+        INNER JOIN user_tb as ut ON ct.user_id = ut.uid
+        WHERE ct.uid = #{uid};
     </select>
     <update id="contentDelete">
         UPDATE content_tb SET deleteyn = "Y" WHERE uid=#{uid} AND user_id=#{userUid};

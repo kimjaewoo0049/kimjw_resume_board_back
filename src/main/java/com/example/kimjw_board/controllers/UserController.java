@@ -31,6 +31,20 @@ public class UserController {
         int checkValue = userService.userCheck(userCheckDto);
         return checkValue;
     }
+    @PostMapping("/findId")
+    public String findId (@RequestBody UserDto userDto){
+        return userService.findId(userDto);
+    }
+    @PostMapping("/pwCheck")
+    public boolean pwCheck(@RequestBody UserDto userDto){
+        return userService.pwCheck(userDto);
+    }
+
+    @PostMapping("/infoRegex")
+    public String infoRegex (@RequestBody UserDto userDto){
+        return userService.infoRegex(userDto);
+    }
+
     @PostMapping("/join")
     public ResponseEntity<String> join (@RequestBody UserDto userDto){
         userService.join(userDto);
